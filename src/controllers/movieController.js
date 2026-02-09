@@ -37,26 +37,21 @@ export const create = async (req, res) => {
 
         const { title, description, duration, genre, rating, available } = req.body;
 
-        if (!title & (title.length < 3))
+        if (!title || (title.length < 3))
             return res.status(400).json({ error: 'O titulo (titulo) é obrigatório!' });
-        if (!description & (description.length < 10))
+        if (!description || (description.length < 10))
             return res.status(400).json({ error: 'A descrição (descrição) é obrigatório!' });
-        if (!duration & !Number.isInteger(duration) || duration <= 0)
+        if (!duration || !Number.isInteger(duration) || duration <= 0)
             return res.status(400).json({ error: 'A duração (duração) é obrigatório!' });
-        if (!genre & !generosPermitidos.includes(genre))
+        if (!genre || !generosPermitidos.includes(genre))
             return res.status(400).json({ error: 'O gênero (gênero) é obrigatório!' });
-        if (!rating & (rating.length > 0 < 10))
-            return res.status(400).json({ error: 'A nota (nota) é obrigatório!' });
+        
         if (!available) return res.status(400).json({ error: 'A nota (nota) é obrigatório!' });
-        if (!filmeExistente.available) {
+
+        if (rating === undefined || rating === null || rating < 0 || rating > 10) {
             return res.status(400).json({
-                error: 'Filmes com status "available = false" não podem ser atualizados!',
+                error: 'A nota (rating) é obrigatória e deve estar entre 0 e 10!',
             });
-        }
-        if (filmeParaDeletar.rating >= 9) {
-            return res
-                .status(400)
-                .json({ error: 'Filmes com nota igual ou superior a 9 não podem ser deletados!' });
         }
 
         const data = await model.create({
@@ -65,7 +60,7 @@ export const create = async (req, res) => {
             duration: parseInt(duration),
             genre,
             rating: parseFloat(rating),
-            available: true,
+            available: available !== undefined ? available : true,
         });
 
         res.status(201).json({
