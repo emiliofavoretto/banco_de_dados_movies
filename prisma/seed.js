@@ -74,7 +74,7 @@ async function main() {
                 description: 'Batman enfrenta a ameaça caótica do Coringa',
                 duration: 152,
                 genre: 'Ação',
-                rating: 9.0, // Não pode ser deletado (Rating >= 9)
+                rating: 9.0, 
                 available: true,
             },
             {

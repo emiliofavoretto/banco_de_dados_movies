@@ -11,10 +11,6 @@ const generosPermitidos = [
     'Ficção Científica',
     'Suspense',
 ];
-
-const filmeParaDeletar = await prisma.movie.findUnique({ where: { id } });
-const filmeExistente = await prisma.movie.findUnique({ where: { id } });
-
 export const getAll = async (req, res) => {
     try {
         const movie = await model.findAll(req.query);
